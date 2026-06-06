@@ -1,0 +1,16 @@
+{
+  "short_name": "CERIA",
+  "name": "CERIA Affiliate E-Commerce Platform",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0F172A",
+  "background_color": "#F8FAFC"
+}

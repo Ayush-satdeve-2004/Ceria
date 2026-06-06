@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Body Styling with Brand Gradient */
+body {
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+}
+.dark body {
+  background: linear-gradient(180deg, #0A0617 0%, #140B2D 50%, #1E1245 100%) no-repeat;
+  background-attachment: fixed;
+  color: #FFFFFF;
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+  background: rgba(20, 11, 45, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+/* AI Premium Button Gradients */
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #8B3DFF, #C084FC);
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(139, 61, 255, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary-gradient:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(192, 132, 252, 0.45);
+}
+
+.btn-secondary-purple {
+  background: transparent;
+  border: 1px solid rgba(139, 61, 255, 0.5);
+  color: #E5E7EB;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-secondary-purple:hover {
+  background: rgba(139, 61, 255, 0.15);
+  border-color: #C084FC;
+  transform: translateY(-2px);
+}
+
+/* Custom Shimmering Skeleton Loader */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Smooth active button press */
+.active-press:active {
+  transform: scale(0.96);
+}
+
+/* Accessibility: Support prefers-reduced-motion for users sensitive to animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* Premium Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E1245;
+  border-radius: 9999px;
+  border: 1px solid rgba(192, 132, 252, 0.1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8B3DFF;
+}
+

@@ -1,0 +1,609 @@
+React Doctor v0.4.0
+
+  
+
+  ⚠ Bugs: Array index used as a key ×9
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-array-index-as-key
+    → Use a stable id from the item, like `key={item.id}` or
+    `key={item.slug}`. Index keys break when the list reorders
+    or filters.
+
+    client/src/pages/Orders.jsx:95
+
+    client/src/pages/Checkout.jsx:43
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:279
+
+    client/src/pages/ProductDetails.jsx:315
+
+    client/src/pages/Products.jsx:130
+
+    client/src/pages/Products.jsx:145
+
+    client/src/pages/admin/AdminDashboard.jsx:110
+
+    client/src/pages/admin/AdminDashboard.jsx:205
+
+    client/src/pages/admin/AdminOrders.jsx:110
+
+  ⚠ Bugs: Missing effect dependencies ×4
+    Learn more: https://react.doctor/docs/rules/react-doctor/exhaustive-deps
+    → Don't blindly add missing dependencies. Read the hook
+    callback first.
+    
+    Bad:
+    useEffect(() => {
+      setCount(count + 1);
+    }, [count]);
+    
+    Better:
+    useEffect(() => {
+      setCount((currentCount) => currentCount + 1);
+    }, []);
+    
+    If the missing value is recreated every render, move it
+    inside the hook or stabilize it before adding it to deps.
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:87
+
+    client/src/pages/admin/AdminUsers.jsx:30
+
+    client/src/pages/ProductDetails.jsx:66
+
+    client/src/pages/Products.jsx:67
+
+  ⚠ Bugs: Time or random value in JSX
+    Learn more: https://react.doctor/docs/rules/react-doctor/rendering-hydration-mismatch-time
+    → Move time or random values into useEffect+useState so
+    they only run in the browser, or add
+    suppressHydrationWarning to the parent if it's intentional
+
+    client/src/components/Footer.jsx:86
+
+  ⚠ Bugs: Uncontrolled input value
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-uncontrolled-input
+    → Give `useState` a starting value (e.g. `useState("")`
+    instead of `useState()`), add `onChange` (or `readOnly`)
+    whenever you set `value`, and drop `defaultValue` on
+    controlled inputs since React ignores it.
+
+    client/src/pages/Profile.jsx:147
+
+  ⚠ Accessibility: Label missing associated control ×44
+    Learn more: https://react.doctor/docs/rules/react-doctor/label-has-associated-control
+    → Tie every label to a control with `htmlFor`, or by
+    nesting the input.
+
+    client/src/pages/Contact.jsx:83
+
+    client/src/pages/Contact.jsx:96
+
+    client/src/pages/Contact.jsx:110
+
+    client/src/pages/Contact.jsx:123
+
+    client/src/pages/ForgotPassword.jsx:108
+
+    client/src/pages/ForgotPassword.jsx:137
+
+    client/src/pages/ForgotPassword.jsx:155
+
+    client/src/pages/Profile.jsx:115
+
+    client/src/pages/Profile.jsx:130
+
+    client/src/pages/Profile.jsx:146
+
+    client/src/pages/Profile.jsx:157
+
+    client/src/pages/Register.jsx:121
+
+    client/src/pages/Register.jsx:139
+
+    client/src/pages/Register.jsx:160
+
+    client/src/pages/Register.jsx:178
+
+    client/src/pages/Register.jsx:209
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:233
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:246
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:259
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:272
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:286
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:302
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:317
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:334
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:346
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:362
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:408
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:421
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:434
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:447
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:460
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:528
+
+    client/src/pages/admin/AdminBanners.jsx:173
+
+    client/src/pages/admin/AdminBanners.jsx:186
+
+    client/src/pages/admin/AdminBanners.jsx:198
+
+    client/src/pages/admin/AdminBanners.jsx:211
+
+    client/src/pages/admin/AdminBanners.jsx:223
+
+    client/src/pages/Products.jsx:122
+
+    client/src/pages/Products.jsx:137
+
+    client/src/pages/Products.jsx:152
+
+    client/src/pages/Products.jsx:179
+
+    client/src/pages/Login.jsx:112
+
+    client/src/pages/Login.jsx:134
+
+    client/src/pages/Login.jsx:169
+
+  ⚠ Bugs: Derived state stored in an effect ×2
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-derived-state-effect
+    → Work out derived values while rendering: `const x =
+    fn(dep)`. To reset a component's state when a prop changes,
+    give it a key prop: `<Component key={prop} />`. See
+    https://react.dev/learn/you-might-not-need-an-effect
+
+    client/src/components/Navbar.jsx:66
+
+    client/src/pages/Products.jsx:30
+
+  ⚠ Performance: Independent awaits run sequentially ×4
+    Learn more: https://react.doctor/docs/rules/react-doctor/async-parallel
+    → Use `const [a, b] = await Promise.all([fetchA(),
+    fetchB()])` so independent calls run at the same time
+
+    server/controllers/productController.js:678
+
+    server/utils/seeder.js:169
+
+    server/utils/seeder.js:223
+
+    server/controllers/orderController.js:110
+
+  ⚠ Performance: await inside a loop ×3
+    Learn more: https://react.doctor/docs/rules/react-doctor/async-await-in-loop
+    → Collect the items, then use `await
+    Promise.all(items.map(...))` so independent work runs at
+    the same time
+
+    server/controllers/productController.js:334
+
+    server/controllers/productController.js:494
+
+    server/utils/seeder.js:268
+
+  ⚠ Bugs: Effects chained together
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-effect-chain
+    → Compute as much as possible during render (e.g. `const
+    isGameOver = round > 5`) and write all related state inside
+    the event handler that originally fires the chain. Each
+    effect link adds an extra render and makes the code rigid
+    as requirements evolve
+
+    client/src/pages/Products.jsx:65
+
+  ⚠ Accessibility: Control missing accessible label ×46
+    Learn more: https://react.doctor/docs/rules/react-doctor/control-has-associated-label
+    → Give every interactive control a label screen readers can
+    read.
+
+    client/src/pages/Contact.jsx:84
+
+    client/src/pages/Contact.jsx:97
+
+    client/src/pages/Contact.jsx:111
+
+    client/src/pages/Contact.jsx:124
+
+    client/src/pages/ForgotPassword.jsx:112
+
+    client/src/pages/ForgotPassword.jsx:141
+
+    client/src/pages/ForgotPassword.jsx:159
+
+    client/src/pages/Profile.jsx:117
+
+    client/src/pages/Profile.jsx:132
+
+    client/src/pages/Profile.jsx:147
+
+    client/src/pages/Profile.jsx:159
+
+    client/src/pages/Register.jsx:125
+
+    client/src/pages/Register.jsx:143
+
+    client/src/pages/Register.jsx:164
+
+    client/src/pages/Register.jsx:182
+
+    client/src/pages/Register.jsx:213
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:234
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:247
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:260
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:287
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:303
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:318
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:335
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:347
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:409
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:422
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:435
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:448
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:461
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:496
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:532
+
+    client/src/pages/admin/AdminUsers.jsx:81
+
+    client/src/pages/ProductDetails.jsx:314
+
+    client/src/pages/ProductDetails.jsx:519
+
+    client/src/pages/admin/AdminBanners.jsx:174
+
+    client/src/pages/admin/AdminBanners.jsx:187
+
+    client/src/pages/admin/AdminBanners.jsx:199
+
+    client/src/pages/admin/AdminBanners.jsx:212
+
+    client/src/pages/admin/AdminBanners.jsx:224
+
+    client/src/pages/admin/AdminBanners.jsx:240
+
+    client/src/pages/Products.jsx:154
+
+    client/src/pages/Products.jsx:161
+
+    client/src/components/Footer.jsx:65
+
+    client/src/pages/Login.jsx:116
+
+    client/src/pages/Login.jsx:142
+
+    client/src/pages/Login.jsx:173
+
+  ⚠ Bugs: Data fetching inside an effect ×3
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-fetch-in-effect
+    → Use `useQuery()` from @tanstack/react-query, `useSWR()`,
+    or fetch in a Server Component instead
+
+    client/src/components/Navbar.jsx:46
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:49
+
+    client/src/pages/Home.jsx:84
+
+  ⚠ Bugs: Multiple setState calls in one effect ×3
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-cascading-set-state
+    → Combine into useReducer: `const [state, dispatch] =
+    useReducer(reducer, initialState)`
+
+    client/src/components/Navbar.jsx:66
+
+    client/src/pages/Profile.jsx:16
+
+    client/src/pages/Products.jsx:30
+
+  ⚠ Bugs: Derived value copied into state ×5
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-derived-state
+    → Work out the value while rendering (or with useMemo if
+    it's expensive) instead of copying it into useState through
+    a useEffect. See
+    https://react.dev/learn/you-might-not-need-an-effect#updating-state-based-on-props-or-state
+
+    client/src/pages/admin/AdminUsers.jsx:29
+
+    client/src/pages/Products.jsx:66
+
+    client/src/context/WishlistContext.jsx:31
+
+    client/src/context/CartContext.jsx:31
+
+    client/src/context/AuthContext.jsx:87
+
+  ⚠ Performance: Full Framer Motion import ×7
+    Learn more: https://react.doctor/docs/rules/react-doctor/use-lazy-motion
+    → Use `import { LazyMotion, m } from "framer-motion"` with
+    `domAnimation` features. Saves about 30kb.
+
+    client/src/pages/ForgotPassword.jsx:3
+
+    client/src/components/Navbar.jsx:3
+
+    client/src/pages/Register.jsx:3
+
+    client/src/pages/Checkout.jsx:4
+
+    client/src/components/ProductCard.jsx:3
+
+    client/src/pages/Login.jsx:3
+
+    client/src/pages/Home.jsx:3
+
+  ⚠ Bugs: Button missing explicit type ×27
+    Learn more: https://react.doctor/docs/rules/react-doctor/button-has-type
+    → Always set a `type` on a `<button>`: `type="button"`,
+    `"submit"`, or `"reset"`.
+
+    client/src/pages/admin/AdminProducts.jsx:156
+
+    client/src/pages/Profile.jsx:84
+
+    client/src/pages/Cart.jsx:144
+
+    client/src/pages/Cart.jsx:151
+
+    client/src/pages/Cart.jsx:159
+
+    client/src/pages/Cart.jsx:212
+
+    client/src/pages/admin/AdminUsers.jsx:152
+
+    client/src/pages/admin/AdminUsers.jsx:165
+
+    client/src/pages/ProductDetails.jsx:284
+
+    client/src/pages/ProductDetails.jsx:296
+
+    client/src/pages/ProductDetails.jsx:314
+
+    client/src/pages/ProductDetails.jsx:421
+
+    client/src/pages/ProductDetails.jsx:430
+
+    client/src/pages/ProductDetails.jsx:440
+
+    client/src/pages/ProductDetails.jsx:452
+
+    client/src/pages/admin/AdminBanners.jsx:364
+
+    client/src/pages/admin/AdminBanners.jsx:371
+
+    client/src/pages/Products.jsx:112
+
+    client/src/pages/Products.jsx:182
+
+    client/src/pages/Products.jsx:247
+
+    client/src/pages/Products.jsx:259
+
+    client/src/pages/Products.jsx:268
+
+    client/src/pages/Products.jsx:281
+
+    client/src/pages/admin/AdminDashboard.jsx:95
+
+    client/src/pages/admin/AdminOrders.jsx:59
+
+    client/src/pages/Wishlist.jsx:90
+
+    client/src/pages/Wishlist.jsx:99
+
+  ⚠ Performance: State only used in handlers
+    Learn more: https://react.doctor/docs/rules/react-doctor/rerender-state-only-in-handlers
+    → Use useRef instead of useState when the value is only set
+    and never shown on screen. `ref.current = ...` updates it
+    without redrawing the component.
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:39
+
+  ⚠ Bugs: State initialized from a mount effect ×6
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-initialize-state
+    → Pass the initial value directly to useState() instead of
+    setting it from a mount-only useEffect. For SSR hydration,
+    prefer useSyncExternalStore().
+
+    client/src/pages/admin/AdminProducts.jsx:28
+
+    client/src/pages/Orders.jsx:26
+
+    client/src/pages/admin/AdminBanners.jsx:41
+
+    client/src/pages/admin/AdminDashboard.jsx:31
+
+    client/src/pages/admin/AdminOrders.jsx:27
+
+    client/src/pages/Home.jsx:131
+
+  ⚠ Performance: Repeated localStorage reads ×3
+    Learn more: https://react.doctor/docs/rules/react-doctor/js-cache-storage
+    → Read `localStorage`/`sessionStorage` once and reuse the
+    value. Every read has to parse the data again, which is slow
+
+    client/src/pages/Home.jsx:40
+
+    client/src/pages/Home.jsx:47
+
+    client/src/context/AuthContext.jsx:57
+
+  ⚠ Maintainability: Static value rebuilt every render ×4
+    Learn more: https://react.doctor/docs/rules/react-doctor/prefer-module-scope-static-value
+    → Move the value above the component, at the top of the
+    file. It doesn't use local state, so rebuilding it each
+    update is wasted and makes it look new every time.
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:45
+
+    client/src/pages/Products.jsx:24-25
+
+    client/src/components/AdminSidebar.jsx:11
+
+  ⚠ Maintainability: deslop/unused-export ×2
+    → Drop the `export` keyword (or remove the declaration) if
+    no other module uses this symbol.
+
+    client/src/context/AuthContext.jsx:7
+
+    client/src/context/AuthContext.jsx:24
+
+  ⚠ Accessibility: Gray text on colored background
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-gray-on-colored-background
+    → Use white or near-white text, or a darker shade of the
+    background color. Gray text on colored backgrounds looks
+    washed out.
+
+    client/src/pages/Wishlist.jsx:99
+
+  ⚠ Maintainability: Pure function rebuilt every render ×2
+    Learn more: https://react.doctor/docs/rules/react-doctor/prefer-module-scope-pure-function
+    → Move the function above the component, at the top of the
+    file. It doesn't use local state, so rebuilding it each
+    update is wasted work.
+
+    client/src/pages/Orders.jsx:29
+
+    client/src/pages/admin/AdminOrders.jsx:30
+
+  ⚠ Maintainability: Component is too large ×5
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-giant-component
+    → Pull each section into its own component, like
+    `<UserHeader />` and `<UserActions />`.
+
+    client/src/components/Navbar.jsx:14
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:8
+
+    client/src/pages/ProductDetails.jsx:14
+
+    client/src/pages/admin/AdminBanners.jsx:7
+
+    client/src/pages/Home.jsx:25
+
+  ⚠ Performance: .map().filter(Boolean) loops twice ×4
+    Learn more: https://react.doctor/docs/rules/react-doctor/js-flatmap-filter
+    → Use `.flatMap(item => condition ? [value] : [])` to
+    change and drop items in one pass, instead of building a
+    throwaway array in between
+
+    server/controllers/productController.js:316-317
+
+    server/controllers/productController.js:464
+
+    server/controllers/productController.js:470
+
+  ⚠ Bugs: Unversioned localStorage key
+    Learn more: https://react.doctor/docs/rules/react-doctor/client-localstorage-no-version
+    → Put a version in the storage key (e.g. "myKey:v1"). If
+    you change the data shape later, old saved data can be
+    ignored instead of crashing the app.
+
+    client/src/pages/ProductDetails.jsx:89
+
+  ⚠ Maintainability: Deprecated React 19 APIs ×4
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-react19-deprecated-apis
+    → Pass `ref` as a normal prop on function components, since
+    `forwardRef` isn't needed in React 19. Replace
+    `useContext(X)` with `use(X)`. Only runs on React 19+
+    projects.
+
+    client/src/context/ThemeContext.jsx:1
+
+    client/src/context/WishlistContext.jsx:1
+
+    client/src/context/CartContext.jsx:1
+
+    client/src/context/AuthContext.jsx:1
+
+  ⚠ Bugs: Many related useState calls ×9
+    Learn more: https://react.doctor/docs/rules/react-doctor/prefer-useReducer
+    → Group related state: `const [state, dispatch] =
+    useReducer(reducer, { field1, field2, ... })`
+
+    client/src/pages/Contact.jsx:5
+
+    client/src/pages/ForgotPassword.jsx:8
+
+    client/src/components/Navbar.jsx:14
+
+    client/src/pages/Register.jsx:8
+
+    client/src/pages/admin/AdminAddEditProduct.jsx:8
+
+    client/src/pages/ProductDetails.jsx:14
+
+    client/src/pages/admin/AdminBanners.jsx:7
+
+    client/src/pages/Products.jsx:9
+
+    client/src/pages/Login.jsx:8
+
+  ⚠ Performance: Bouncy easing animation ×2
+    Learn more: https://react.doctor/docs/rules/react-doctor/no-inline-bounce-easing
+    → Use `cubic-bezier(0.16, 1, 0.3, 1)` (ease-out-expo) for a
+    natural finish. Real objects don't bounce.
+
+    client/src/components/Navbar.jsx:188
+
+    client/src/pages/Checkout.jsx:21
+
+
+  ────────────────────────────────────────────────────────────
+
+  All 204 issues
+
+  Bugs › 72 warnings
+  Performance › 24 warnings
+  Accessibility › 91 warnings
+  Maintainability › 17 warnings
+
+  ┌─────┐  64 / 100 Needs work
+  │ • • │  ████████████████████████████████░░░░░░░░░░░░░░░░░░
+  │  ─  │  React Doctor (https://react.doctor)
+  └─────┘
+
+  Full diagnostics written to /var/folders/bv/2ckhj74j4279mlvr_1zj4mb40000gn/T/react-doctor-1f19c994-7837-4a8e-a903-ed7597a53bca
+
+  ────────────────────────────────────────────────────────────
+
+  Share: https://react.doctor/share?p=ceria-affiliate-platform&s=64&w=204&f=29
+  Tell others how you did on socials
+
+  Docs: https://react.doctor/docs
+  Learn more about fixing issues, setting up CI/CD, and configuring rules with a config file
+
+  GitHub: https://github.com/millionco/react-doctor
+  Report issues and star the repository!
+
