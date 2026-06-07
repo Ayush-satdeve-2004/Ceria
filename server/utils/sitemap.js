@@ -14,7 +14,7 @@ const generateSitemap = async () => {
 
     const products = await Product.find({}, '_id updatedAt');
     
-    const baseUrl = 'http://localhost:5173'; // Core MERN client URL
+    const baseUrl = 'https://ceria-evev.onrender.com'; // Core MERN client URL
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 

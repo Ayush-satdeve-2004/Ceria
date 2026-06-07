@@ -41,7 +41,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Enable CORS
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL || 'http://localhost:5173', 'http://localhost:3000'],
+    origin: [process.env.FRONTEND_URL || 'https://ceria-evev.onrender.com', 'http://localhost:3000'],
     credentials: true
   })
 );
