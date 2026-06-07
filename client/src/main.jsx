@@ -2,6 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import axios from 'axios'
+
+// Set axios base URL globally for backend server requests
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
 
 // Accessibility: prefers-reduced-motion query is implemented globally in index.css
 // @media (prefers-reduced-motion: reduce)

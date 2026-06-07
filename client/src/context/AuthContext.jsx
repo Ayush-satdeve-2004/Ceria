@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
   // Configure global axios defaults
   useEffect(() => {
     axios.defaults.withCredentials = false;
+    axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
   }, []);
 
   const loadUser = useCallback(async (active = { current: true }) => {
