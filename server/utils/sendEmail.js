@@ -12,12 +12,17 @@ const sendEmail = async (options) => {
     return { success: true, logged: true };
   }
 
-  // Create transporter
+  // Create transporter using Port 587 (Render blocks Port 465)
   const transporter = nodemailer.createTransport({
-    service: 'gmail', // Standard MERN choice
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // false for port 587 (uses STARTTLS)
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
+    },
+    tls: {
+      rejectUnauthorized: false
     }
   });
 
