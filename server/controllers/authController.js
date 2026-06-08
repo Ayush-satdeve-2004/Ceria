@@ -357,3 +357,63 @@ exports.verifyEmail = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Email Diagnostic & Test Route
+// @route   GET /api/auth/email-diagnostic
+// @access  Public (for debugging config)
+exports.emailDiagnostic = async (req, res, next) => {
+  try {
+    const sendTo = req.query.sendTo;
+    
+    // Check which environment variables are present on the server
+    const config = {
+      BREVO_API_KEY_PRESENT: !!process.env.BREVO_API_KEY,
+      BREVO_SENDER_EMAIL_PRESENT: !!process.env.BREVO_SENDER_EMAIL,
+      BREVO_SENDER_EMAIL_VALUE: process.env.BREVO_SENDER_EMAIL || null,
+      RESEND_API_KEY_PRESENT: !!process.env.RESEND_API_KEY,
+      EMAIL_USER_PRESENT: !!process.env.EMAIL_USER,
+      EMAIL_USER_VALUE: process.env.EMAIL_USER || null,
+      EMAIL_PASS_PRESENT: !!process.env.EMAIL_PASS
+    };
+
+    let activeProvider = 'None (Console Fallback)';
+    if (process.env.BREVO_API_KEY) {
+      activeProvider = 'Brevo HTTP API';
+    } else if (process.env.RESEND_API_KEY) {
+      activeProvider = 'Resend HTTP API';
+    } else if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      activeProvider = 'Gmail SMTP';
+    }
+
+    const report = {
+      success: true,
+      activeProvider,
+      environmentVariables: config,
+      testEmailStatus: null
+    };
+
+    if (sendTo) {
+      try {
+        const result = await sendEmail({
+          email: sendTo,
+          subject: 'CERIA - Server Diagnostic Email',
+          message: `This is a test email sent from the CERIA server using the ${activeProvider} provider configuration.`
+        });
+        report.testEmailStatus = {
+          success: true,
+          result
+        };
+      } catch (err) {
+        report.testEmailStatus = {
+          success: false,
+          error: err.message
+        };
+      }
+    }
+
+    res.status(200).json(report);
+  } catch (error) {
+    next(error);
+  }
+};
+
