@@ -4,11 +4,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://ceria-cyvy.onrender.com/api/:path*"
+      "destination": "https://ceria-evev.onrender.com/api/:path*"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "https://ceria-cyvy.onrender.com/uploads/:path*"
+      "destination": "https://ceria-evev.onrender.com/uploads/:path*"
     },
     {
       "source": "/((?!api|uploads).*[^/])",
