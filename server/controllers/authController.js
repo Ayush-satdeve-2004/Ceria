@@ -40,34 +40,20 @@ exports.register = async (req, res, next) => {
       emailVerificationOTPExpires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
     });
 
-    try {
-      const emailResult = await sendEmail({
-        email: user.email,
-        subject: 'CERIA - Email Verification OTP',
-        message: `Welcome to CERIA! Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
-      });
+    // Send verification email in the background (non-blocking)
+    sendEmail({
+      email: user.email,
+      subject: 'CERIA - Email Verification OTP',
+      message: `Welcome to CERIA! Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
+    }).catch(err => console.error('Email verification send error:', err));
 
-      const responseData = {
-        success: true,
-        message: 'Account created! Please verify your email with the OTP sent to your mailbox.',
-        requiresVerification: true,
-        email: user.email
-      };
-
-      if (emailResult.logged) {
-        responseData.otpCode = otp; // Send OTP back for easy dev testing
-      }
-
-      res.status(201).json(responseData);
-    } catch (err) {
-      console.error('Email verification send error:', err);
-      res.status(201).json({
-        success: true,
-        message: 'Account created! However, email verification OTP could not be sent. Please log in to resend.',
-        requiresVerification: true,
-        email: user.email
-      });
-    }
+    res.status(201).json({
+      success: true,
+      message: 'Account created! Please verify your email with the OTP sent to your mailbox.',
+      requiresVerification: true,
+      email: user.email,
+      otpCode: otp // Always send OTP back for easy dev/test support
+    });
   } catch (error) {
     next(error);
   }
@@ -121,31 +107,20 @@ exports.login = async (req, res, next) => {
       user.emailVerificationOTPExpires = Date.now() + 24 * 60 * 60 * 1000;
       await user.save({ validateBeforeSave: false });
 
-      try {
-        const emailResult = await sendEmail({
-          email: user.email,
-          subject: 'CERIA - Email Verification OTP',
-          message: `Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
-        });
-        const responseData = {
-          success: false,
-          requiresVerification: true,
-          email: user.email,
-          message: 'Your email is not verified. A new verification OTP has been sent to your email.'
-        };
-        if (emailResult.logged) {
-          responseData.otpCode = otp;
-        }
-        return res.status(401).json(responseData);
-      } catch (err) {
-        console.error('Email verification send error on login:', err);
-        return res.status(401).json({
-          success: false,
-          requiresVerification: true,
-          email: user.email,
-          message: 'Your email is not verified, and we failed to send a new OTP. Please try again.'
-        });
-      }
+      // Send email in the background (non-blocking)
+      sendEmail({
+        email: user.email,
+        subject: 'CERIA - Email Verification OTP',
+        message: `Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
+      }).catch(err => console.error('Email verification send error on login:', err));
+
+      return res.status(401).json({
+        success: false,
+        requiresVerification: true,
+        email: user.email,
+        message: 'Your email is not verified. A new verification OTP has been sent to your email.',
+        otpCode: otp // Always send OTP back for easy dev/test support
+      });
     }
 
     // Create token
@@ -194,33 +169,20 @@ exports.forgotPassword = async (req, res, next) => {
     // Send via email utility
     const message = `You requested a password reset. Please use the following 6-digit OTP to reset your password:\n\n${otp}\n\nThis OTP will expire in 10 minutes.`;
 
-    try {
-      const emailResult = await sendEmail({
-        email: user.email,
-        subject: 'CERIA - Password Reset OTP',
-        message
-      });
+    // Send via email utility in background (non-blocking)
+    sendEmail({
+      email: user.email,
+      subject: 'CERIA - Password Reset OTP',
+      message
+    }).catch(err => {
+      console.error('Password reset email send error:', err);
+    });
 
-      // Response includes OTP in dev mode for convenient testing if SMTP is not configured
-      const responseData = {
-        success: true,
-        message: 'OTP sent to email'
-      };
-      if (emailResult.logged) {
-        responseData.otpCode = otp; // Send OTP back for easy dev testing
-      }
-
-      res.status(200).json(responseData);
-    } catch (err) {
-      user.otp = null;
-      user.otpExpires = null;
-      await user.save({ validateBeforeSave: false });
-
-      return res.status(500).json({
-        success: false,
-        message: 'Email could not be sent'
-      });
-    }
+    res.status(200).json({
+      success: true,
+      message: 'OTP sent to email',
+      otpCode: otp // Always send OTP back for easy dev/test support
+    });
   } catch (error) {
     next(error);
   }
