@@ -9,11 +9,11 @@ exports.register = async (req, res, next) => {
     const { name, email, password, mobile } = req.body;
 
     // Validate password strength
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/_\-\.]).{6,}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         success: false,
-        message: 'Password must be at least 5 characters long and contain at least one uppercase letter, one number, and one special character.'
+        message: 'Password must be at least 6 characters long and contain at least one uppercase letter, one number, and one special character.'
       });
     }
 
@@ -241,11 +241,11 @@ exports.resetPassword = async (req, res, next) => {
     }
 
     // Validate password strength
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/_\-\.]).{6,}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         success: false,
-        message: 'Password must be at least 5 characters long and contain at least one uppercase letter, one number, and one special character.'
+        message: 'Password must be at least 6 characters long and contain at least one uppercase letter, one number, and one special character.'
       });
     }
 

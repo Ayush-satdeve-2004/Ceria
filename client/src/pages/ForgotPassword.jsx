@@ -49,9 +49,9 @@ const ForgotPassword = () => {
       return;
     }
 
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/_\-\.]).{6,}$/;
     if (!passwordRegex.test(password)) {
-      toast.warning('Password must be at least 5 characters long and contain at least one uppercase letter, one number, and one special character (@$!%*?&).');
+      toast.warning('Password must be at least 6 characters long and contain at least one uppercase letter, one number, and one special character.');
       return;
     }
 
