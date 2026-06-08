@@ -51,8 +51,7 @@ exports.register = async (req, res, next) => {
       success: true,
       message: 'Account created! Please verify your email with the OTP sent to your mailbox.',
       requiresVerification: true,
-      email: user.email,
-      otpCode: otp // Always send OTP back for easy dev/test support
+      email: user.email
     });
   } catch (error) {
     next(error);
@@ -118,8 +117,7 @@ exports.login = async (req, res, next) => {
         success: false,
         requiresVerification: true,
         email: user.email,
-        message: 'Your email is not verified. A new verification OTP has been sent to your email.',
-        otpCode: otp // Always send OTP back for easy dev/test support
+        message: 'Your email is not verified. A new verification OTP has been sent to your email.'
       });
     }
 
@@ -180,8 +178,7 @@ exports.forgotPassword = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'OTP sent to email',
-      otpCode: otp // Always send OTP back for easy dev/test support
+      message: 'OTP sent to email'
     });
   } catch (error) {
     next(error);
