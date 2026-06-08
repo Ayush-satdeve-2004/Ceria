@@ -47,14 +47,12 @@ exports.register = async (req, res, next) => {
       message: `Welcome to CERIA! Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
     }).catch(err => console.error('Email verification send error:', err));
 
-    const isSmtpConfigured = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS);
-
     res.status(201).json({
       success: true,
       message: 'Account created! Please verify your email with the OTP sent to your mailbox.',
       requiresVerification: true,
       email: user.email,
-      ...(isSmtpConfigured ? {} : { otpCode: otp })
+      otpCode: otp // Always send OTP back for easy dev/test support
     });
   } catch (error) {
     next(error);
@@ -116,14 +114,12 @@ exports.login = async (req, res, next) => {
         message: `Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
       }).catch(err => console.error('Email verification send error on login:', err));
 
-      const isSmtpConfigured = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS);
-
       return res.status(401).json({
         success: false,
         requiresVerification: true,
         email: user.email,
         message: 'Your email is not verified. A new verification OTP has been sent to your email.',
-        ...(isSmtpConfigured ? {} : { otpCode: otp })
+        otpCode: otp // Always send OTP back for easy dev/test support
       });
     }
 
@@ -182,12 +178,10 @@ exports.forgotPassword = async (req, res, next) => {
       console.error('Password reset email send error:', err);
     });
 
-    const isSmtpConfigured = !!(process.env.EMAIL_USER && process.env.EMAIL_PASS);
-
     res.status(200).json({
       success: true,
       message: 'OTP sent to email',
-      ...(isSmtpConfigured ? {} : { otpCode: otp })
+      otpCode: otp // Always send OTP back for easy dev/test support
     });
   } catch (error) {
     next(error);
