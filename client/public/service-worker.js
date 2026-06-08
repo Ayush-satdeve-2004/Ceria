@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ceria-v1';
+const CACHE_NAME = 'ceria-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -30,6 +30,12 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // Only handle HTTP/HTTPS (ignore chrome-extension, etc.)
   if (!event.request.url.startsWith('http')) return;
+
+  // Bypass service worker for API and uploads requests
+  const url = new URL(event.request.url);
+  if (url.pathname.startsWith('/api') || url.pathname.startsWith('/uploads')) {
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request)
