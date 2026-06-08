@@ -1,6 +1,63 @@
 const nodemailer = require('nodemailer');
 const https = require('https');
 
+const sendEmailViaBrevo = (options) => {
+  return new Promise((resolve, reject) => {
+    const senderEmail = process.env.BREVO_SENDER_EMAIL || process.env.EMAIL_USER || 'onboarding@resend.dev';
+    const data = JSON.stringify({
+      sender: {
+        name: 'CERIA Admin',
+        email: senderEmail
+      },
+      to: [
+        {
+          email: options.email
+        }
+      ],
+      subject: options.subject,
+      htmlContent: `<h3>${options.subject}</h3><p>${options.message.replace(/\n/g, '<br>')}</p>`,
+      textContent: options.message
+    });
+
+    const reqOptions = {
+      hostname: 'api.brevo.com',
+      port: 443,
+      path: '/v3/smtp/email',
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Content-Length': Buffer.byteLength(data)
+      }
+    };
+
+    const req = https.request(reqOptions, (res) => {
+      let body = '';
+      res.on('data', (chunk) => body += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          try {
+            const parsed = JSON.parse(body);
+            resolve({ success: true, messageId: parsed.messageId });
+          } catch (e) {
+            resolve({ success: true });
+          }
+        } else {
+          reject(new Error(`Brevo API failed with status ${res.statusCode}: ${body}`));
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(data);
+    req.end();
+  });
+};
+
 const sendEmailViaResend = (options) => {
   return new Promise((resolve, reject) => {
     // Resend free tier uses onboarding@resend.dev as sender
@@ -51,6 +108,18 @@ const sendEmailViaResend = (options) => {
 };
 
 const sendEmail = async (options) => {
+  // If Brevo API Key is configured, use Brevo HTTP API (works on Render free tier, no custom domain restriction)
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const result = await sendEmailViaBrevo(options);
+      console.log(`Email sent via Brevo API successfully: ${result.messageId}`);
+      return result;
+    } catch (error) {
+      console.error('Brevo API Send Error:', error.message);
+      throw error;
+    }
+  }
+
   // If Resend API Key is configured, use Resend HTTP API (works on Render free tier)
   if (process.env.RESEND_API_KEY) {
     try {
