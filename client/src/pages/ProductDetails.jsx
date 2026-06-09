@@ -10,6 +10,7 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-toastify';
 import ProductCard from '../components/ProductCard';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -262,7 +263,7 @@ const ProductDetails = () => {
             <div className="aspect-square bg-slate-50 dark:bg-slate-950 rounded-2xl overflow-hidden mb-4 relative">
               {activeMediaTab === 'images' ? (
                 <img
-                  src={selectedImg}
+                  src={optimizeImageUrl(selectedImg, 800)}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
@@ -319,7 +320,7 @@ const ProductDetails = () => {
                         selectedImg === img ? 'border-secondary scale-105' : 'border-transparent'
                       }`}
                     >
-                      <img src={img} className="w-full h-full object-cover" alt="" />
+                      <img src={optimizeImageUrl(img, 150)} className="w-full h-full object-cover" alt="" />
                     </button>
                   ))}
                 </div>

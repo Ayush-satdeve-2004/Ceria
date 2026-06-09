@@ -5,6 +5,7 @@ import { Heart, ShoppingCart, Star, ExternalLink } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-toastify';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 // Platform badges styling mapper (hoisted to module scope to avoid re-creation on render)
 const getPlatformBadge = (platform) => {
@@ -104,7 +105,7 @@ const ProductCard = ({ product }) => {
       {/* Product Image Gallery Wrapper */}
       <Link to={`/products/${product._id}`} className="block relative overflow-hidden aspect-video bg-slate-50 dark:bg-slate-950">
         <img
-          src={product.images?.[0] || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800'}
+          src={optimizeImageUrl(product.images?.[0], 400) || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800'}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           loading="lazy"

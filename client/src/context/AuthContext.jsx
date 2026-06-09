@@ -174,6 +174,22 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // Resend Verification Email
+  const resendVerification = useCallback(async (email) => {
+    try {
+      const res = await axios.post('/api/auth/resend-verification', { email });
+      return {
+        success: true,
+        message: res.data.message
+      };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Failed to resend verification code'
+      };
+    }
+  }, []);
+
   // Update Profile
   const updateProfile = useCallback(async (name, mobile, address) => {
     try {
@@ -218,6 +234,7 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     updateProfile,
     logoutUser,
+    resendVerification,
     isAdmin
   }), [
     user,
@@ -228,6 +245,7 @@ export const AuthProvider = ({ children }) => {
     verifyEmail,
     updateProfile,
     logoutUser,
+    resendVerification,
     isAdmin
   ]);
 

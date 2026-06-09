@@ -9,6 +9,7 @@ import {
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import SkeletonCard from '../components/SkeletonCard';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 // Categories department list hoisted outside component scope to avoid recreation on render
 const categories = [
@@ -155,7 +156,7 @@ const Home = () => {
           <AnimatePresence mode="wait">
             <motion.img
               key={currentSlide}
-              src={heroSlides[currentSlide]?.image}
+              src={optimizeImageUrl(heroSlides[currentSlide]?.image, 800)}
               alt="Banner background"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.15 }}
@@ -233,7 +234,7 @@ const Home = () => {
                   <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-10"></div>
                   
                   <img
-                    src={heroSlides[currentSlide]?.image}
+                    src={optimizeImageUrl(heroSlides[currentSlide]?.image, 1200)}
                     alt={heroSlides[currentSlide]?.title}
                     className="absolute inset-0 w-full h-full object-cover rounded-3xl"
                   />

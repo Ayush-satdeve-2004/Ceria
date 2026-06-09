@@ -4,6 +4,7 @@ import { Heart, Trash2, ShoppingCart, ArrowRight } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 const Wishlist = () => {
   const { wishlist, loading, removeFromWishlist } = useWishlist();
@@ -65,7 +66,7 @@ const Wishlist = () => {
               >
                 {/* Image */}
                 <div className="aspect-video bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
-                  <img src={prod.images?.[0]} className="w-full h-full object-cover" alt="" />
+                  <img src={optimizeImageUrl(prod.images?.[0], 400)} className="w-full h-full object-cover" alt="" />
                   <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-secondary/15 text-secondary text-[9px] font-black uppercase tracking-wider">
                     {prod.sourcePlatform}
                   </span>

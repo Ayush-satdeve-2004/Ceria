@@ -37,14 +37,14 @@ exports.register = async (req, res, next) => {
       mobile,
       isVerified: false,
       emailVerificationOTP: otp,
-      emailVerificationOTPExpires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
+      emailVerificationOTPExpires: Date.now() + 10 * 60 * 1000 // 10 minutes
     });
 
     // Send verification email in the background (non-blocking)
     sendEmail({
       email: user.email,
       subject: 'CERIA - Email Verification OTP',
-      message: `Welcome to CERIA! Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
+      message: `Welcome to CERIA! Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 10 minutes.`
     }).catch(err => console.error('Email verification send error:', err));
 
     res.status(201).json({
@@ -103,14 +103,14 @@ exports.login = async (req, res, next) => {
     if (!user.isVerified) {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       user.emailVerificationOTP = otp;
-      user.emailVerificationOTPExpires = Date.now() + 24 * 60 * 60 * 1000;
+      user.emailVerificationOTPExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
       await user.save({ validateBeforeSave: false });
 
       // Send email in the background (non-blocking)
       sendEmail({
         email: user.email,
         subject: 'CERIA - Email Verification OTP',
-        message: `Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 24 hours.`
+        message: `Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 10 minutes.`
       }).catch(err => console.error('Email verification send error on login:', err));
 
       return res.status(401).json({
@@ -412,6 +412,59 @@ exports.emailDiagnostic = async (req, res, next) => {
     }
 
     res.status(200).json(report);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Resend Verification OTP
+// @route   POST /api/auth/resend-verification
+// @access  Public
+exports.resendVerification = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide an email address'
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No user found with that email address'
+      });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'This email is already verified'
+      });
+    }
+
+    // Generate new 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.emailVerificationOTP = otp;
+    user.emailVerificationOTPExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save({ validateBeforeSave: false });
+
+    // Send email in the background (non-blocking)
+    sendEmail({
+      email: user.email,
+      subject: 'CERIA - Email Verification OTP',
+      message: `Please use the following 6-digit OTP code to verify your email address:\n\n${otp}\n\nThis OTP is valid for 10 minutes.`
+    }).catch(err => console.error('Email verification resend error:', err));
+
+    res.status(200).json({
+      success: true,
+      message: 'A new verification OTP has been sent to your email.'
+    });
   } catch (error) {
     next(error);
   }

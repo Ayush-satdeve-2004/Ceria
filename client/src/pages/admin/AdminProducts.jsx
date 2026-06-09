@@ -4,6 +4,7 @@ import { Trash2, Edit3, Plus, ShoppingBag, ExternalLink, Eye } from 'lucide-reac
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import AdminSidebar from '../../components/AdminSidebar';
+import { optimizeImageUrl } from '../../utils/imageOptimizer';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -97,7 +98,7 @@ const AdminProducts = () => {
                       
                       {/* Image / Name info */}
                       <td className="py-4 px-6 flex items-center space-x-3.5 max-w-[280px]">
-                        <img src={prod.images?.[0]} className="w-12 h-9 rounded-lg object-cover bg-slate-50 shrink-0 border" alt="" />
+                        <img src={optimizeImageUrl(prod.images?.[0], 100)} className="w-12 h-9 rounded-lg object-cover bg-slate-50 shrink-0 border" alt="" />
                         <div className="truncate">
                           <h4 className="font-extrabold text-xs text-slate-800 dark:text-slate-150 leading-snug truncate">
                             {prod.name}

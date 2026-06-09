@@ -4,6 +4,7 @@ import { ShoppingCart, Plus, Minus, Trash2, ArrowRight, ExternalLink, ShieldChec
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 const Cart = () => {
   const { cart, loading, updateCartQty, removeFromCart, getCartTotal, getCartCount, clearCart } = useCart();
@@ -115,7 +116,7 @@ const Cart = () => {
                 >
                   {/* Thumbnail */}
                   <Link to={`/products/${prod._id}`} className="w-24 h-18 bg-slate-50 dark:bg-slate-950 rounded-2xl overflow-hidden shrink-0 border border-slate-100 dark:border-slate-800">
-                    <img src={prod.images?.[0]} className="w-full h-full object-cover" alt="" />
+                    <img src={optimizeImageUrl(prod.images?.[0], 150)} className="w-full h-full object-cover" alt="" />
                   </Link>
 
                   {/* Info details */}

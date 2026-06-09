@@ -78,6 +78,17 @@ const AdminRoute = ({ children }) => {
   return children;
 };
 
+// Scroll to top helper on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 // Layout Coordinator
 const AppLayout = () => {
   const location = useLocation();
@@ -85,6 +96,7 @@ const AppLayout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
       {/* Hide standard navbar on administrative pages */}
       {!isAdminPath && <Navbar />}
       

@@ -14,8 +14,10 @@ const Register = () => {
   const [otp, setOtp] = useState('');
   const [devOtp, setDevOtp] = useState(''); // Dev helper for intercepting OTP
   const [submitting, setSubmitting] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const [resending, setResending] = useState(false);
 
-  const { registerUser, verifyEmail, user } = useAuth();
+  const { registerUser, verifyEmail, resendVerification, user } = useAuth();
   const navigate = useNavigate();
 
   // If already logged in, redirect
@@ -24,6 +26,33 @@ const Register = () => {
       navigate('/', { replace: true });
     }
   }, [user, navigate]);
+
+  // Cooldown timer effect
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
+  const handleResendOtp = async () => {
+    if (cooldown > 0 || resending) return;
+    try {
+      setResending(true);
+      const res = await resendVerification(email);
+      if (res.success) {
+        toast.success(res.message || 'A new verification OTP has been sent to your email!');
+        setCooldown(60); // 60s cooldown
+      } else {
+        toast.error(res.message || 'Failed to resend code');
+      }
+    } catch (err) {
+      toast.error('An error occurred while resending the code');
+    } finally {
+      setResending(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -231,6 +260,21 @@ const Register = () => {
               <span>{submitting ? 'Verifying...' : 'Verify & Activate Account'}</span>
               <ShieldCheck className="w-4.5 h-4.5" />
             </button>
+
+            {/* Resend verification button */}
+            <div className="text-center pt-2">
+              <span className="text-xs text-slate-400 font-semibold block mb-1">
+                Didn't receive the code?
+              </span>
+              <button
+                type="button"
+                onClick={handleResendOtp}
+                disabled={cooldown > 0 || resending}
+                className="text-xs font-bold text-secondary hover:underline disabled:text-slate-400 disabled:no-underline transition-all active-press"
+              >
+                {cooldown > 0 ? `Resend Code in ${cooldown}s` : resending ? 'Resending...' : 'Resend Verification Code'}
+              </button>
+            </div>
           </form>
         )}
 
