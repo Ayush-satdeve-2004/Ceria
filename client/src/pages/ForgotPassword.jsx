@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, KeyRound, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -12,9 +12,41 @@ const ForgotPassword = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [devOtp, setDevOtp] = useState(''); // Dev fallback helper
+  const [cooldown, setCooldown] = useState(0);
+  const [resending, setResending] = useState(false);
 
   const { forgotPassword, resetPassword } = useAuth();
   const navigate = useNavigate();
+
+  // Cooldown timer effect
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
+  const handleResendOtp = async () => {
+    if (cooldown > 0 || resending) return;
+    try {
+      setResending(true);
+      const res = await forgotPassword(email);
+      if (res.success) {
+        toast.success(res.message || 'Verification code has been resent to your email.');
+        setCooldown(60); // 60s cooldown (1 min)
+        if (res.otpCode) {
+          setDevOtp(res.otpCode);
+        }
+      } else {
+        toast.error(res.message || 'Failed to resend code');
+      }
+    } catch (err) {
+      toast.error('An error occurred while resending the code');
+    } finally {
+      setResending(false);
+    }
+  };
 
   const handleRequestOtp = async (e) => {
     e.preventDefault();
@@ -176,6 +208,21 @@ const ForgotPassword = () => {
               <span>{loading ? 'Updating Password...' : 'Reset & Save Password'}</span>
               <ShieldCheck className="w-4.5 h-4.5" />
             </button>
+
+            {/* Resend verification button */}
+            <div className="text-center pt-2">
+              <span className="text-xs text-slate-400 font-semibold block mb-1">
+                Didn't receive the code?
+              </span>
+              <button
+                type="button"
+                onClick={handleResendOtp}
+                disabled={cooldown > 0 || resending}
+                className="text-xs font-bold text-secondary hover:underline disabled:text-slate-400 disabled:no-underline transition-all active-press"
+              >
+                {cooldown > 0 ? `Resend Code in ${cooldown}s` : resending ? 'Resending...' : 'Resend Verification Code'}
+              </button>
+            </div>
           </form>
         )}
 

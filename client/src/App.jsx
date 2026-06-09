@@ -80,11 +80,11 @@ const AdminRoute = ({ children }) => {
 
 // Scroll to top helper on route change
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, search]);
 
   return null;
 };
