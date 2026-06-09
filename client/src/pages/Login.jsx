@@ -71,6 +71,7 @@ const Login = () => {
         if (res.otpCode) {
           setDevOtp(res.otpCode);
         }
+        setCooldown(60); // 60s cooldown (1 min) immediately when sent
         setStep(2);
       } else {
         toast.error(res.message || 'Login failed. Please check credentials.');
