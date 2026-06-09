@@ -16,30 +16,24 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>,
 )
 
-// Register Service Worker for PWA (Production Only)
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(reg => console.log('Service Worker registered successfully:', reg.scope))
-      .catch(err => console.log('Service Worker registration failed:', err));
-  });
-} else if ('serviceWorker' in navigator && !import.meta.env.PROD) {
-  // Self-Healing Dev Assistant: Wipes out stale service workers and dev caches automatically!
+// Clean and unregister all Service Workers to prevent aggressive caching bugs
+if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(registrations => {
-    for (let registration of registrations) {
-      registration.unregister().then(() => {
-        console.log('[Dev Assistant] Programmatically unregistered stale Service Worker cache.');
-        // Force refresh to reload clean app from dev server
-        window.location.reload();
-      });
+    if (registrations.length > 0) {
+      for (let registration of registrations) {
+        registration.unregister().then(() => {
+          console.log('[System] Programmatically unregistered stale Service Worker.');
+        });
+      }
+      // Delete all caches
+      if (window.caches) {
+        caches.keys().then(names => {
+          Promise.all(names.map(name => caches.delete(name))).then(() => {
+            console.log('[System] Cleared all caches.');
+            window.location.reload();
+          });
+        });
+      }
     }
   });
-
-  if (window.caches) {
-    caches.keys().then(names => {
-      for (let name of names) {
-        caches.delete(name);
-      }
-    });
-  }
 }
