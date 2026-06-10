@@ -257,7 +257,7 @@ const AdminAddEditProduct = () => {
 
               {/* Price */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Price (₹) *</label>
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Price ($) *</label>
                 <input
                   type="number"
                   required

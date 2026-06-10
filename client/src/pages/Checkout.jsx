@@ -62,7 +62,7 @@ const Checkout = () => {
 
             <div className="border-t border-slate-200/50 dark:border-slate-700 pt-3 flex justify-between items-center text-sm font-bold">
               <span className="text-slate-500">Transaction Volume</span>
-              <span className="text-slate-900 dark:text-white">₹{order.totalAmount.toLocaleString('en-IN')}</span>
+              <span className="text-slate-900 dark:text-white">${order.totalAmount.toLocaleString('en-US')}</span>
             </div>
           </div>
         )}

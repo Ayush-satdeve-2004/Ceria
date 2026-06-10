@@ -257,7 +257,7 @@ const AIAssistant = () => {
                               <div className="flex-grow min-w-0">
                                 <h4 className="text-[11px] font-black text-white truncate">{prod.name}</h4>
                                 <div className="flex justify-between items-center mt-1">
-                                  <span className="text-[10px] font-extrabold text-[#C084FC]">₹{prod.price.toLocaleString('en-IN')}</span>
+                                  <span className="text-[10px] font-extrabold text-[#C084FC]">${prod.price.toLocaleString('en-US')}</span>
                                   <span className="text-[9px] font-semibold text-slate-400 bg-black/40 px-1.5 py-0.5 rounded uppercase">
                                     {prod.sourcePlatform}
                                   </span>

@@ -375,7 +375,7 @@ const ProductDetails = () => {
               <div>
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-0.5">Special Affiliate Deal</span>
                 <span className="text-3xl font-black text-slate-900 dark:text-white">
-                  ₹{product.price.toLocaleString('en-IN')}
+                  ${product.price.toLocaleString('en-US')}
                 </span>
               </div>
 
@@ -390,7 +390,7 @@ const ProductDetails = () => {
             {/* Description */}
             <div className="space-y-2 pt-2">
               <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Product Details</h3>
-              <p className="text-sm leading-relaxed text-slate-650 dark:text-slate-350">
+              <p className="text-sm leading-relaxed text-slate-650 dark:text-slate-350 whitespace-pre-wrap">
                 {product.description}
               </p>
             </div>

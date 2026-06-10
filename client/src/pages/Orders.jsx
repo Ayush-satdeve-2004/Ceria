@@ -107,7 +107,7 @@ const Orders = () => {
 
                     <div className="flex items-center space-x-4 ml-auto sm:ml-0">
                       <span className="font-black text-slate-900 dark:text-white text-sm">
-                        ₹{(item.price * item.quantity).toLocaleString('en-IN')}
+                        ${(item.price * item.quantity).toLocaleString('en-US')}
                       </span>
                       <a
                         href={item.affiliateLink}
@@ -127,7 +127,7 @@ const Orders = () => {
               <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 flex items-center justify-between text-sm font-bold">
                 <span className="text-slate-500">Transaction Volume</span>
                 <span className="text-base font-extrabold text-slate-900 dark:text-white">
-                  ₹{order.totalAmount.toLocaleString('en-IN')}
+                  ${order.totalAmount.toLocaleString('en-US')}
                 </span>
               </div>
 

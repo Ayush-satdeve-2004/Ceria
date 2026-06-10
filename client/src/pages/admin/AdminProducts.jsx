@@ -114,7 +114,7 @@ const AdminProducts = () => {
 
                       {/* Price */}
                       <td className="py-4 px-6 font-extrabold text-slate-900 dark:text-white">
-                        ₹{prod.price.toLocaleString('en-IN')}
+                        ${prod.price.toLocaleString('en-US')}
                       </td>
 
                       {/* Affiliate portal link */}

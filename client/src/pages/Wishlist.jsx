@@ -82,7 +82,7 @@ const Wishlist = () => {
                       </h3>
                     </Link>
                     <span className="font-black text-slate-900 dark:text-white text-base block">
-                      ₹{prod.price.toLocaleString('en-IN')}
+                      ${prod.price.toLocaleString('en-US')}
                     </span>
                   </div>
 

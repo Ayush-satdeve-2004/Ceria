@@ -135,7 +135,7 @@ const Cart = () => {
                     </Link>
                     
                     <span className="font-black text-slate-900 dark:text-white text-base block">
-                      ₹{prod.price.toLocaleString('en-IN')}
+                      ${prod.price.toLocaleString('en-US')}
                     </span>
                   </div>
 
@@ -198,7 +198,7 @@ const Cart = () => {
                 <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 flex justify-between text-base">
                   <span className="text-slate-800 dark:text-white">Estimated Total</span>
                   <span className="text-xl font-black text-slate-950 dark:text-white">
-                    ₹{getCartTotal().toLocaleString('en-IN')}
+                    ${getCartTotal().toLocaleString('en-US')}
                   </span>
                 </div>
               </div>

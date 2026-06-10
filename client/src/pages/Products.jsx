@@ -175,7 +175,7 @@ const Products = () => {
 
             {/* Price Range Filter Form */}
             <form onSubmit={handleApplyPriceFilter} className="space-y-2.5">
-              <label className="text-xs font-black text-slate-400 uppercase tracking-widest block">Price Range (₹)</label>
+              <label className="text-xs font-black text-slate-400 uppercase tracking-widest block">Price Range ($)</label>
               <div className="grid grid-cols-2 gap-2">
                 <input
                   type="number"

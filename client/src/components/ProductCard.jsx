@@ -149,10 +149,10 @@ const ProductCard = ({ product }) => {
           <div>
             <div className="flex items-center space-x-1.5">
               <span className="font-extrabold text-slate-900 dark:text-white text-lg">
-                ₹{product.price.toLocaleString('en-IN')}
+                ${product.price.toLocaleString('en-US')}
               </span>
               <span className="text-xs text-slate-400 dark:text-slate-500 line-through">
-                ₹{Math.round(product.price * 1.25).toLocaleString('en-IN')}
+                ${Math.round(product.price * 1.25).toLocaleString('en-US')}
               </span>
             </div>
             <span className="text-[10px] text-amber-500 font-black block uppercase tracking-wider">

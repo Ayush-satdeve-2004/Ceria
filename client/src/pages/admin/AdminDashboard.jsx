@@ -143,10 +143,10 @@ const AdminDashboard = () => {
           <div className="text-center shrink-0 p-5 bg-white/5 border border-white/10 rounded-2xl relative z-10 md:min-w-[200px]">
             <span className="text-xs text-slate-400 block font-bold uppercase mb-1">Estimated Earnings</span>
             <span className="text-3xl font-extrabold text-amber-400">
-              ₹{stats?.revenueEstimation?.toLocaleString('en-IN') || 0}
+              ${stats?.revenueEstimation?.toLocaleString('en-US') || 0}
             </span>
             <span className="text-[10px] text-slate-450 font-semibold block mt-1 uppercase">
-              From ₹{stats?.totalTransactionVolume?.toLocaleString('en-IN') || 0} redirection volume
+              From ${stats?.totalTransactionVolume?.toLocaleString('en-US') || 0} redirection volume
             </span>
           </div>
         </div>
@@ -205,8 +205,8 @@ const AdminDashboard = () => {
                     stats.monthlyStats.map((item) => (
                       <tr key={item.month}>
                         <td className="py-3 font-extrabold">{item.month}</td>
-                        <td className="py-3">₹{item.sales.toLocaleString('en-IN')}</td>
-                        <td className="py-3 text-emerald-500 font-extrabold">₹{item.commissions.toLocaleString('en-IN')}</td>
+                        <td className="py-3">${item.sales.toLocaleString('en-US')}</td>
+                        <td className="py-3 text-emerald-500 font-extrabold">${item.commissions.toLocaleString('en-US')}</td>
                         <td className="py-3 font-bold">{item.orders} times</td>
                       </tr>
                     ))

@@ -121,7 +121,7 @@ const AdminOrders = () => {
 
                       {/* Value */}
                       <td className="py-4 px-6 font-extrabold text-slate-900 dark:text-white">
-                        ₹{ord.totalAmount.toLocaleString('en-IN')}
+                        ${ord.totalAmount.toLocaleString('en-US')}
                       </td>
 
                       {/* Date */}
