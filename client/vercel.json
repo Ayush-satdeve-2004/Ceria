@@ -1,17 +1,15 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://ceria-evev.onrender.com/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://ceria-evev.onrender.com/api/:path*"
     },
     {
-      "source": "/uploads/(.*)",
-      "destination": "https://ceria-evev.onrender.com/uploads/$1"
+      "source": "/uploads/:path*",
+      "destination": "https://ceria-evev.onrender.com/uploads/:path*"
     },
     {
-      "source": "/((?!api|uploads|assets|logo.png|manifest.json|service-worker.js|favicon.ico|sitemap.xml).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
