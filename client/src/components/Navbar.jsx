@@ -97,8 +97,18 @@ const Navbar = () => {
           
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="CERIA Logo" className="h-8 md:h-10 w-auto object-contain" />
+            <Link to="/" className="flex items-center space-x-2.5 group">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#8B3DFF] to-[#C084FC] flex items-center justify-center shadow-lg shadow-[#8B3DFF]/20 group-hover:scale-105 transition-transform duration-300">
+                <Sparkles className="w-5.5 h-5.5 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-[#8B3DFF] to-[#C084FC] bg-clip-text text-transparent tracking-wider leading-none">
+                  CERIA
+                </span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-0.5 leading-none">
+                  Affiliate
+                </span>
+              </div>
               <span className="px-2 py-0.5 rounded bg-gradient-to-r from-[#8B3DFF] to-[#C084FC] text-white text-[9px] font-black uppercase tracking-wider hidden sm:inline-block shadow-[0_0_10px_rgba(139,61,255,0.3)]">
                 Agent
               </span>

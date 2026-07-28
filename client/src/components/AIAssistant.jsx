@@ -250,7 +250,7 @@ const AIAssistant = () => {
                               className="flex items-center space-x-3 bg-[#140B2D]/80 hover:bg-[#201345] p-2 rounded-xl border border-[#c084fc]/25 cursor-pointer transition-all duration-300"
                             >
                               <img 
-                                src={prod.images?.[0] || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=80'} 
+                                src={prod.images?.[0] || 'https://images.unsplash.com/photo-1549462184-b09ad0a4af67?w=80'} 
                                 alt={prod.name}
                                 className="w-12 h-12 object-cover rounded-lg border border-white/10 shrink-0"
                               />

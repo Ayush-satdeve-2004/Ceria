@@ -58,7 +58,7 @@ const Home = () => {
         title: "Discover Handpicked Premium Tech Deals",
         subtitle: "Curated from top platforms like Amazon & Flipkart at unbeatable prices.",
         badge: "EXCLUSIVE ELECTRONICS SALE",
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&auto=format&fit=crop&q=80",
+        image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1600&auto=format&fit=crop&q=80",
         cta: "Explore Tech",
         link: "/products?category=Electronics"
       },
@@ -112,7 +112,7 @@ const Home = () => {
               title: prod.heroTitle || prod.name,
               subtitle: prod.heroSubtitle || prod.description,
               badge: prod.heroBadge || `${prod.category.toUpperCase()} SPECIAL DEAL`,
-              image: prod.heroImage || (prod.images && prod.images[0]) || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&auto=format&fit=crop&q=80',
+              image: prod.heroImage || (prod.images && prod.images[0]) || 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1600&auto=format&fit=crop&q=80',
               cta: prod.heroCta || 'Explore Deal',
               link: `/products/${prod._id}`
             }));
